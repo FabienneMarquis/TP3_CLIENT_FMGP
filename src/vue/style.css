@@ -1,0 +1,30 @@
+.Background{
+    -fx-background-image: url("hotel-de-glace-1.jpg");
+    -fx-opacity: 1;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+
+
+}.button{
+     -fx-background-color:
+             #374060,
+             linear-gradient(#42494b 0%, #4c4d59 20%, #374060 100%),
+             linear-gradient(#20262b, #191d22);
+     -fx-background-radius: 5,4,3,5;
+     -fx-background-insets: 0,1,2,0;
+     -fx-text-fill: white;
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+     -fx-font-family: "Arial";
+     -fx-text-fill: linear-gradient(white, #d0d0d0);
+     -fx-font-size: 14px;
+ }
+.text{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+.text{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}

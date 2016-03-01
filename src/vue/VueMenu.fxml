@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="600.0" styleClass="Background" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTab">
+    <tabs>
+      <Tab text="Connection">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background" stylesheets="@style.css">
+               <children>
+                  <fx:include source="VueLogginServeur.fxml" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+        <Tab fx:id="tabReservation" text="Réservation">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background" stylesheets="@style.css">
+               <children>
+                  <fx:include source="VueReservation.fxml" />
+               </children></AnchorPane>
+            </content>
+        </Tab>
+        <Tab fx:id="tabNewReservation" text="Nouvelle réservation">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background" stylesheets="@style.css">
+               <children>
+                  <fx:include source="VueNewReservation.fxml" />
+               </children></AnchorPane>
+            </content>
+        </Tab>
+        <Tab fx:id="tabClient" text="Clients">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background" stylesheets="@style.css">
+               <children>
+                  <fx:include source="VueClient.fxml" />
+               </children></AnchorPane>
+            </content>
+        </Tab>
+      <Tab fx:id="tabnewClient" text="Nouveau Clients">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="background" stylesheets="@style.css">
+               <children>
+                  <fx:include source="VueNewClient.fxml" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+    </tabs>
+</TabPane>
