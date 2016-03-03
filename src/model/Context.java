@@ -23,6 +23,9 @@ public class Context extends Observable {
     private final String PORT = "port";
     private final String confFile = "conf.txt";
     private boolean connection;
+    private int numEmploye;
+    private String passWordEmploye;
+
 
     private Context(){
 
@@ -74,8 +77,20 @@ public class Context extends Observable {
 //
 
 
-    public static Context getContext() {
-        return context;
+    public int getNumEmploye() {
+        return numEmploye;
+    }
+
+    public void setNumEmploye(int numEmploye) {
+        this.numEmploye = numEmploye;
+    }
+
+    public String getPassWordEmploye() {
+        return passWordEmploye;
+    }
+
+    public void setPassWordEmploye(String passWordEmploye) {
+        this.passWordEmploye = passWordEmploye;
     }
 
     public Client getClient() {

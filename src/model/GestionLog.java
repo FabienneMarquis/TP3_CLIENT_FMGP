@@ -15,7 +15,7 @@ public class GestionLog {
      * @param args
      */
     public static void main(String[] args) {
-
+        int nomLoggeur = Context.getInstance().getNumEmploye();
         Handler fh;
         try {
             fh = new FileHandler("myLog.log", true);
@@ -28,7 +28,8 @@ public class GestionLog {
             e.printStackTrace();
         }
 
-        logger.log(Level.SEVERE, "dominique :");
+        logger.log(Level.SEVERE, nomLoggeur+" :");
+        //ajouter la déconnection?
 
 
         String fileName = "temp1.txt";
