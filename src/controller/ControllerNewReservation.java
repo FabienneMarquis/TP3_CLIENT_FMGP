@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ControllerNewReservation implements Initializable{
+public class ControllerNewReservation implements Initializable {
 
-      @FXML
+    @FXML
     private ListView<Client> listClientExistant;
 
     @FXML
@@ -42,24 +42,26 @@ public class ControllerNewReservation implements Initializable{
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Sauvegarde");
         alert.setHeaderText("Nouvelle Réservation");
-        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?" +
-                "");
+        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?" );
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-               //ajouter une nouvelle réservation
-            Reservation reservation = new Reservation(new Date(dateCheckIn.getValue().toEpochDay()),new Date(dateCheckOut.getValue().toEpochDay()),
-                    Context.getInstance().getClient().getIdClient(), Context.getInstance().getChambre().getIdChambre() );
+            //ajouter une nouvelle réservation
+            Reservation reservation = new Reservation(new Date(dateCheckIn.getValue().toEpochDay()), new Date(dateCheckOut.getValue().toEpochDay()),
+                    Context.getInstance().getClient().getIdClient(), Context.getInstance().getChambre().getIdChambre());
+            Context.getInstance().setReservation(reservation);
+            Context.getInstance().newReservation();
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //listClientExistant.setItems(FXCollections.observableArrayList(Context.getInstance().getClients()));
-        listClientExistant.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Context.getInstance().setClient(newValue);
-        });
-        chambreLibre.setItems( FXCollections.observableArrayList(Context.getInstance().getListChambre()));
+        listClientExistant.setItems(FXCollections.observableArrayList(Context.getInstance().getClients()));
+        listClientExistant.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> Context.getInstance().setClient(newValue));
+        chambreLibre.setItems(FXCollections.observableArrayList(Context.getInstance().getListChambre()));
+        chambreLibre.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> Context.getInstance().setChambre(newValue));
 //        dateCheckIn.setValue(LocalDate.now());
 //        final Callback<DatePicker, DateCell> dayCellFactory =
 //                new Callback<DatePicker, DateCell>() {
@@ -83,6 +85,6 @@ public class ControllerNewReservation implements Initializable{
 //        dateCheckOut.setDayCellFactory(dayCellFactory);
 //        dateCheckOut.setValue(dateCheckOut.getValue().plusDays(1));
 
-        }
+    }
 }
 

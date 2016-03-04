@@ -17,8 +17,6 @@ public class Context extends Observable {
     private static Context context;
     private Client client;
     private Reservation reservation;
-    private ListClients clients;
-    private ListReservations reservations;
     private int port;
     private String ip;
     private final String PORT = "port";
@@ -31,7 +29,8 @@ public class Context extends Observable {
     private String prenomEmp;
     private Chambre chambre;
     private List<Chambre> listChambre;
-
+    private List<Client> clients;
+    private List<Reservation> reservations;
 
     private Context(){
 
@@ -81,7 +80,16 @@ public class Context extends Observable {
 //        this.clientThread = clientThread;
 //    }
 //
+    public List<Client> getClients(){
+        return clients;
+    }
 
+    public void addClientFromServer(){
+        //ajouter les clients du serveur
+    }
+    public void saveClientServeur(){
+
+    }
 
     public void setClient(Client client) {
         this.client = client;
@@ -119,6 +127,10 @@ public class Context extends Observable {
         return listChambre;
     }
 
+    private void setListChambre(){
+        //connection avec le serveur
+            }
+
     public int getNumEmploye() {
         return numEmploye;
     }
@@ -141,14 +153,6 @@ public class Context extends Observable {
 
     public Reservation getReservation() {
         return reservation;
-    }
-
-    public ListClients getClients() {
-        return clients;
-    }
-
-    public ListReservations getReservations() {
-        return reservations;
     }
 
     public boolean isConnection() {
@@ -208,18 +212,35 @@ public class Context extends Observable {
         return Integer.valueOf(properties.getProperty(PORT));
     }
 
-    public void newClient(String nom, String prenom, int phone){
-
+    public void modificationReservation(){
+        String modRez= "modification:Reservation:"+reservation.getDateCheckIn()+":"+reservation.getDateCheckOut()+";"+reservation.getIdChambre()+":"+
+                reservation.getIdClient();
     }
 
-    public void newReservation(int idClient){
+    public void modificaitonClient(){
+        String modClient = "modifier:client:"+client.getIdClient()+":"+client.getNom()+":"+client.getPrenom()+":"+client.getTelephone();
+        //envoit au thread
+    }
+
+    public void newClient(String nom, String prenom, int phone){
+        String newClient= "new:Client:"+nom+":"+prenom+":"+phone;
+        //retourne idClient
+    }
+
+    public void newReservation(){
+        String newRez= "new:Reservation:"+reservation.getDateCheckIn()+":"+reservation.getDateCheckOut()+";"+reservation.getIdChambre()+":"+
+                reservation.getIdClient();
+        //création buffer
+        //après le retour du serveur ajouter le ID de la réservation puis ajouter la réservation à la liste
+        // reservations.add(reservation);
 
     }
 
     public void connectServeur(){
         connectServe.run();
         if(connection==true){
-            //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date)
+            String infoConnection = "employe:"+numEmploye+":"+passWordEmploye;
+            //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date) thread
         }
     }
 

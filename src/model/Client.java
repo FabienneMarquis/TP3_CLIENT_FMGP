@@ -15,6 +15,11 @@ public class Client {
         this.telephone = telephone;
     }
 
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
+    }
+
+
     public String getNom() {
         return nom;
     }
