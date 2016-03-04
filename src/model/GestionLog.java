@@ -9,7 +9,7 @@ import java.util.logging.*;
  * Created by 1494778 on 2016-02-22.
  */
 public class GestionLog {
-    private static Logger logger= Logger.getLogger("Logging.Semaine_6_logging");
+    private static Logger logger= Logger.getLogger("");
 
     /**
      * @param args

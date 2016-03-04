@@ -1,16 +1,23 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import model.Context;
+import model.Reservation;
 
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class ControllerReservation {
+public class ControllerReservation implements Initializable
+{
 
 
         @FXML
-        private ListView<?> listViewClientTOUT;
+        private ListView<Reservation> listViewClientTOUT;
 
         @FXML
         private TextField nomClient;
@@ -64,4 +71,12 @@ public class ControllerReservation {
                 }
         }
 
-    }
+        @Override
+        public void initialize(URL location, ResourceBundle resources) {
+                listViewClientTOUT.setItems(FXCollections.observableArrayList(Context.getInstance().getReservations()));
+                listViewClientTOUT.getSelectionModel().selectedItemProperty().addListener(
+                        (observable, oldValue, newValue) -> {
+
+                        });
+        }
+}

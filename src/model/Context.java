@@ -31,6 +31,7 @@ public class Context extends Observable {
     private List<Chambre> listChambre;
     private List<Client> clients;
     private List<Reservation> reservations;
+    private ClientSSL clientSSL;
 
     private Context(){
 
@@ -131,6 +132,22 @@ public class Context extends Observable {
         //connection avec le serveur
             }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void setListChambre(List<Chambre> listChambre) {
+        this.listChambre = listChambre;
+    }
+
     public int getNumEmploye() {
         return numEmploye;
     }
@@ -224,12 +241,14 @@ public class Context extends Observable {
 
     public void newClient(String nom, String prenom, int phone){
         String newClient= "new:Client:"+nom+":"+prenom+":"+phone;
+
         //retourne idClient
     }
 
     public void newReservation(){
         String newRez= "new:Reservation:"+reservation.getDateCheckIn()+":"+reservation.getDateCheckOut()+";"+reservation.getIdChambre()+":"+
                 reservation.getIdClient();
+
         //création buffer
         //après le retour du serveur ajouter le ID de la réservation puis ajouter la réservation à la liste
         // reservations.add(reservation);

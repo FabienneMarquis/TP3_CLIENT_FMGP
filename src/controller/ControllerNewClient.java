@@ -6,6 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import model.Client;
+import model.Context;
 
 import java.util.Optional;
 
@@ -31,16 +33,13 @@ public class ControllerNewClient {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Annuler");
-        alert.setContentText("Voulez-vous effac");
+        alert.setContentText("Voulez-vous effacer les informations");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-
-            //ajouter nouveau client à BD en plus de la réservation
-
-
-            //ajouter une nouvelle réservation
-
+            nomClient.setText("");
+            prenomClient.setText("");
+            telephoneClient.setText("");
         }
     }
 
@@ -50,16 +49,12 @@ public class ControllerNewClient {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Sauvegarde");
         alert.setHeaderText("Nouvelle Réservation");
-        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?" +
-                "");
+        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-
+            Context.getInstance().newClient(nomClient.getText(), prenomClient.getText(), Integer.parseInt(telephoneClient.getText()));
             //ajouter nouveau client à BD en plus de la réservation
-
-
-            //ajouter une nouvelle réservation
 
         }
     }
