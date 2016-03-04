@@ -1,22 +1,28 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+import model.Chambre;
+import model.Client;
 import model.Context;
+import model.Reservation;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControllerNewReservation implements Initializable{
 
       @FXML
-    private ListView<?> listClientExistant;
+    private ListView<Client> listClientExistant;
 
     @FXML
     private DatePicker dateCheckIn;
@@ -25,7 +31,7 @@ public class ControllerNewReservation implements Initializable{
     private DatePicker dateCheckOut;
 
     @FXML
-    private ComboBox<?> chambreLibre;
+    private ComboBox<Chambre> chambreLibre;
 
     @FXML
     private Button btnSave;
@@ -41,18 +47,19 @@ public class ControllerNewReservation implements Initializable{
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-
-                //ajouter nouveau client à BD en plus de la réservation
-
-
-
-                //ajouter une nouvelle réservation
-
+               //ajouter une nouvelle réservation
+            Reservation reservation = new Reservation(new Date(dateCheckIn.getValue().toEpochDay()),new Date(dateCheckOut.getValue().toEpochDay()),
+                    Context.getInstance().getClient().getIdClient(), Context.getInstance().getChambre().getIdChambre() );
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //listClientExistant.setItems(FXCollections.observableArrayList(Context.getInstance().getClients()));
+        listClientExistant.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            Context.getInstance().setClient(newValue);
+        });
+        chambreLibre.setItems( FXCollections.observableArrayList(Context.getInstance().getListChambre()));
 //        dateCheckIn.setValue(LocalDate.now());
 //        final Callback<DatePicker, DateCell> dayCellFactory =
 //                new Callback<DatePicker, DateCell>() {

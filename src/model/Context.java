@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Observable;
 import java.util.Properties;
 
@@ -28,6 +29,8 @@ public class Context extends Observable {
     private ConnexionAuServeur connectServe;
     private String nomEmpl;
     private String prenomEmp;
+    private Chambre chambre;
+    private List<Chambre> listChambre;
 
 
     private Context(){
@@ -79,6 +82,42 @@ public class Context extends Observable {
 //    }
 //
 
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public String getNomEmpl() {
+        return nomEmpl;
+    }
+
+    public void setNomEmpl(String nomEmpl) {
+        this.nomEmpl = nomEmpl;
+    }
+
+    public String getPrenomEmp() {
+        return prenomEmp;
+    }
+
+    public void setPrenomEmp(String prenomEmp) {
+        this.prenomEmp = prenomEmp;
+    }
+
+    public Chambre getChambre() {
+        return chambre;
+    }
+
+    public void setChambre(Chambre chambre) {
+        this.chambre = chambre;
+    }
+
+    public List<Chambre> getListChambre() {
+        return listChambre;
+    }
 
     public int getNumEmploye() {
         return numEmploye;
@@ -179,6 +218,9 @@ public class Context extends Observable {
 
     public void connectServeur(){
         connectServe.run();
+        if(connection==true){
+            //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date)
+        }
     }
 
     public void fermetureConnect(){

@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import model.Context;
 
 import java.net.URL;
@@ -16,6 +17,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControllerConnection implements Initializable, Observer {
+
+    @FXML
+    private Text textBienvenu;
 
     @FXML
     private TextField textNoEmploye;
@@ -49,6 +53,8 @@ public class ControllerConnection implements Initializable, Observer {
                 alert.setHeaderText("Champs invalide");
                 alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
                 alert.showAndWait();
+            }else if (Context.getInstance().isConnection()==true){
+                textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
             }
         }
 
