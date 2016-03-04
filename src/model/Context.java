@@ -26,6 +26,8 @@ public class Context extends Observable {
     private int numEmploye;
     private String passWordEmploye;
     private ConnexionAuServeur connectServe;
+    private String nomEmpl;
+    private String prenomEmp;
 
 
     private Context(){
@@ -139,17 +141,6 @@ public class Context extends Observable {
         }
         return ip;
     }
-//
-//    /**
-//     * return the app icon if null or the value set
-//     * @return
-//     */
-//    public String getAppIcon(){
-//        if(appIcon.length() == 0){
-//            appIcon = getAppIconFromProperties();
-//        }
-//        return appIcon;
-//    }
 
     /**
      * set the port

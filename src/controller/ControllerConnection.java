@@ -42,7 +42,14 @@ public class ControllerConnection implements Initializable, Observer {
             //lancer la connection
             Context.getInstance().setNumEmploye(Integer.parseInt(textNoEmploye.getText()));
             Context.getInstance().setPassWordEmploye(textMotPasse.getText());
-
+            Context.getInstance().connectServeur();
+            if (Context.getInstance().isConnection()==false) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Mots de passe ou Id invalide");
+                alert.setHeaderText("Champs invalide");
+                alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
+                alert.showAndWait();
+            }
         }
 
     }
@@ -56,7 +63,7 @@ public class ControllerConnection implements Initializable, Observer {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-
+            Context.getInstance().fermetureConnect();
         }
     }
 
