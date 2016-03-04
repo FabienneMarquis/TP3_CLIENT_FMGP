@@ -25,6 +25,7 @@ public class Context extends Observable {
     private boolean connection;
     private int numEmploye;
     private String passWordEmploye;
+    private ConnexionAuServeur connectServe;
 
 
     private Context(){
@@ -183,6 +184,14 @@ public class Context extends Observable {
 
     public void newReservation(int idClient){
 
+    }
+
+    public void connectServeur(){
+        connectServe.run();
+    }
+
+    public void fermetureConnect(){
+        if (connectServe.fermetureConnection()==false)connection=false;
     }
 
 }

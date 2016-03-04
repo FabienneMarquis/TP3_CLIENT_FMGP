@@ -32,12 +32,17 @@ public class ControllerConnection implements Initializable, Observer {
     @FXML
     void connectionServer(ActionEvent event) {
 
-        if(textNoEmploye.getText().isEmpty() || textMotPasse.getText().isEmpty()){
+        if (textNoEmploye.getText().isEmpty() || textMotPasse.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connection");
             alert.setHeaderText("Champs invalide");
             alert.setContentText("Vous n'avez pas entrer votre numéro d'employé ou mot de passe correctement. ");
             alert.showAndWait();
+        } else {
+            //lancer la connection
+            Context.getInstance().setNumEmploye(Integer.parseInt(textNoEmploye.getText()));
+            Context.getInstance().setPassWordEmploye(textMotPasse.getText());
+
         }
 
     }
@@ -51,7 +56,7 @@ public class ControllerConnection implements Initializable, Observer {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-            //supprimer la  réservation
+
         }
     }
 
@@ -62,10 +67,10 @@ public class ControllerConnection implements Initializable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(Context.getInstance().isConnection()==true){
+        if (Context.getInstance().isConnection() == true) {
             btnDeconnection.setDisable(false);
             btnConnection.setDisable(true);
-        }else if (Context.getInstance().isConnection()==false){
+        } else if (Context.getInstance().isConnection() == false) {
             btnDeconnection.setDisable(true);
             btnConnection.setDisable(false);
         }
