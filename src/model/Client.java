@@ -4,12 +4,20 @@ package model;
  * Created by 1494778 on 2016-02-22.
  */
 public class Client {
+    private int idClient;
     private String nom;
     private String prenom;
     private int telephone;
-    private int idClient;
+
 
     public Client(String nom, String prenom, int telephone) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.telephone = telephone;
+    }
+
+    public Client(int idClient, String nom, String prenom, int telephone) {
+        this.idClient = idClient;
         this.nom = nom;
         this.prenom = prenom;
         this.telephone = telephone;

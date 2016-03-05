@@ -18,13 +18,10 @@ public class Context extends Observable {
     private Client client;
     private Reservation reservation;
     private int port;
-    private String ip;
-    private final String PORT = "port";
-    private final String confFile = "conf.txt";
+    private String ip= "172.18.10.35";
     private boolean connection;
     private int numEmploye;
     private String passWordEmploye;
-    private ConnexionAuServeur connectServe;
     private String nomEmpl;
     private String prenomEmp;
     private Chambre chambre;
@@ -176,16 +173,6 @@ public class Context extends Observable {
         return connection;
     }
 
-    /**
-     * return Port from properties if 0 or else the custom value
-     * @return port
-     */
-    public int getPort() {
-        if(port == 0){
-            port = getPortFromProperties();
-        }
-        return port;
-    }
 
     /**
      * Return local ip if null or the value set
@@ -202,52 +189,32 @@ public class Context extends Observable {
         return ip;
     }
 
-    /**
-     * set the port
-     * @param port
-     */
-    public void setPort(int port) {
-        System.out.println(port);
-        this.port = port;
-    }
-
-    private int getPortFromProperties() {
-        Properties properties = new Properties();
-        InputStream in = null;
-        try {
-            in = getClass().getResourceAsStream(confFile);
-            properties.load(in);
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
-        return Integer.valueOf(properties.getProperty(PORT));
-    }
+    /*
+    * Info pour procédure d'envoit et réception de données
+    * model:action?varname1=valeur&varname2=valeur
+    * */
 
     public void modificationReservation(){
-        String modRez= "modification:Reservation:"+reservation.getDateCheckIn()+":"+reservation.getDateCheckOut()+";"+reservation.getIdChambre()+":"+
-                reservation.getIdClient();
+        String modRez= "reservation:modify?id="+reservation.getIdReservation()+"id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
+                +"&checkin="+reservation.getDateCheckIn()
+                +"&checkout="+reservation.getDateCheckOut();
     }
 
     public void modificaitonClient(){
-        String modClient = "modifier:client:"+client.getIdClient()+":"+client.getNom()+":"+client.getPrenom()+":"+client.getTelephone();
+        String modClient = "client:modify?id="+client.getIdClient()+"&nom="+client.getNom()+"&"+client.getPrenom()+":"+client.getTelephone();
         //envoit au thread
     }
 
     public void newClient(String nom, String prenom, int phone){
-        String newClient= "new:Client:"+nom+":"+prenom+":"+phone;
-
+        String newClient= "client:new:"+nom+":"+prenom+":"+phone;
         //retourne idClient
     }
 
     public void newReservation(){
-        String newRez= "new:Reservation:"+reservation.getDateCheckIn()+":"+reservation.getDateCheckOut()+";"+reservation.getIdChambre()+":"+
-                reservation.getIdClient();
+        String newRez= "reservation:new?id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
+                +"&checkin="+reservation.getDateCheckIn()
+                +"&checkout="+reservation.getDateCheckOut();
+
 
         //création buffer
         //après le retour du serveur ajouter le ID de la réservation puis ajouter la réservation à la liste
@@ -256,15 +223,20 @@ public class Context extends Observable {
     }
 
     public void connectServeur(){
-        connectServe.run();
-        if(connection==true){
-            String infoConnection = "employe:"+numEmploye+":"+passWordEmploye;
+        clientSSL= new ClientSSL(ip);
+        clientSSL.run();
+       clientSSL.isFermer();
+        if(!clientSSL.isFermer()){
+            String infoConnection = "employee:connection:id="+numEmploye+":mot_de_passe="+passWordEmploye;
+            clientSSL.send(infoConnection);
             //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date) thread
         }
     }
 
-    public void fermetureConnect(){
-        if (connectServe.fermetureConnection()==false)connection=false;
+    public void fermetureConnect(){clientSSL.close();
+        if (clientSSL.isFermer())connection=false;
     }
+
+
 
 }

@@ -12,6 +12,9 @@ public class ClientSSL extends Thread{
     private SSLSocket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private boolean fermer;
+
+
     ClientSSL(String ip){
         System.setProperty("javax.net.ssl.trustStore", "public.jks");
         SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
@@ -20,20 +23,44 @@ public class ClientSSL extends Thread{
             socket.startHandshake();
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            fermer=false;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
     public void run() {
         while (true) {
             String line = null;
             try {
+                fermer=false;
                 line = bufferedReader.readLine();
                 System.out.println(line);
-                // Traitement
+                String[] inputs = line.split(":");
+                switch (inputs[0]){
+                    case "client":
+                        switch (inputs[2]){
+                            case "":
+                                break;
+                        }
+                        break;
+                    case "employee":
 
-                // wtf
+                        break;
+                    case "reservation":
+                        switch (inputs[2]){
+                            case "new":
+                                break;
+                            case "modify":
+                                break;
+                        }
+                        break;
+                    case "chambre":
+
+                        break;
+                }
             } catch (IOException e) {
                 close();
             }
@@ -41,22 +68,30 @@ public class ClientSSL extends Thread{
                 break;
         }
     }
-    private void close() {
+    public boolean close() {
+        fermer=false;
         try {
             socket.close();
+            fermer=true;
         } catch (IOException e1) {
             //e1.printStackTrace();
+            fermer=false;
         }
         try {
             bufferedReader.close();
+            fermer=true;
         } catch (IOException e1) {
             // e1.printStackTrace();
+            fermer=false;
         }
         try {
             bufferedWriter.close();
+            fermer=true;
         } catch (IOException e1) {
             //e1.printStackTrace();
+            fermer=false;
         }
+        return fermer;
     }
     public void send(String msg){
         try {
@@ -72,5 +107,9 @@ public class ClientSSL extends Thread{
         clientSSL.start();
         clientSSL.send("Hello");
 
+    }
+
+    public boolean isFermer() {
+        return fermer;
     }
 }

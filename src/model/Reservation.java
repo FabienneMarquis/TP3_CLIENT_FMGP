@@ -19,6 +19,22 @@ public class Reservation {
         this.idChambre = idChambre;
     }
 
+    public Reservation(int idReservation, Date dateCheckIn, Date dateCheckOut, int idClient, int idChambre) {
+        this.idReservation = idReservation;
+        this.dateCheckIn = dateCheckIn;
+        this.dateCheckOut = dateCheckOut;
+        this.idClient = idClient;
+        this.idChambre = idChambre;
+    }
+
+    public int getIdReservation() {
+        return idReservation;
+    }
+
+    public void setIdReservation(int idReservation) {
+        this.idReservation = idReservation;
+    }
+
     public Date getDateCheckIn() {
         return dateCheckIn;
     }

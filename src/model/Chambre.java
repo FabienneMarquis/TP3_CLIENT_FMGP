@@ -5,10 +5,12 @@ package model;
  */
 public class Chambre {
     private int idChambre;
+    private String nomChambre;
     private String descripChambre;
 
-    public Chambre(int idChambre, String descripChambre) {
+    public Chambre(int idChambre, String nomChambre, String descripChambre) {
         this.idChambre = idChambre;
+        this.nomChambre = nomChambre;
         this.descripChambre = descripChambre;
     }
 
