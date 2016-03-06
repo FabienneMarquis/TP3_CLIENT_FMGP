@@ -18,10 +18,10 @@ public class Context extends Observable {
     private int port;
     private String ip= "127.0.0.1";
     private boolean connection;
-    private int numEmploye;
-    private String passwordEmploye;
-    private String nomEmpl;
-    private String prenomEmp;
+    private int numEmploye = 0;
+    private String passwordEmploye = "";
+    private String nomEmpl = "";
+    private String prenomEmp = "";
     private Chambre chambre;
     private List<Chambre> chambres;
     private List<Client> clients;
@@ -224,15 +224,22 @@ public class Context extends Observable {
 
     }
 
-    public void login(int numEmploye, String passWordEmploye){
+    public void login(int numEmploye, String passwordEmploye){
+        this.numEmploye = numEmploye;
+        this.passwordEmploye = passwordEmploye;
         if(!clientSSL.isFermer()){
-            String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
+            String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passwordEmploye;
             clientSSL.send(infoConnection);
         }
     }
     public void loginAccepted(String prenomEmp, String nomEmpl){
         this.prenomEmp = prenomEmp;
         this.nomEmpl = nomEmpl;
+        setChanged();
+        notifyObservers();
+    }
+    public void loginRefused(){
+        setChanged();
         notifyObservers();
     }
 

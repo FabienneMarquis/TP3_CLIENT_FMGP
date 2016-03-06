@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,16 +42,8 @@ public class ControllerConnection implements Initializable, Observer {
         } else {
             try {
                 int numEmp = Integer.parseInt(textNoEmploye.getText());
+                // Demande de login au serveur.
                 Context.getInstance().login(numEmp, textMotPasse.getText());
-                if (Context.getInstance().isLoggedIn()==false) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Mots de passe ou Id invalide");
-                    alert.setHeaderText("Champs invalide");
-                    alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
-                    alert.showAndWait();
-                }else if (Context.getInstance().isLoggedIn()==true){
-                    textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
-                }
             }catch (Exception e){
                 displayChampsErreur();
             }
@@ -87,12 +80,25 @@ public class ControllerConnection implements Initializable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (Context.getInstance().isLoggedIn() == true) {
-            btnDeconnection.setDisable(false);
-            btnConnection.setDisable(true);
-        } else if (Context.getInstance().isLoggedIn() == false) {
-            btnDeconnection.setDisable(true);
-            btnConnection.setDisable(false);
+        if (Context.getInstance().isLoggedIn()) {
+            Platform.runLater(()->{
+                btnDeconnection.setDisable(false);
+                btnConnection.setDisable(true);
+                textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
+            });
+
+        } else if (!Context.getInstance().isLoggedIn()) {
+
+            Platform.runLater(()->{
+                btnDeconnection.setDisable(true);
+                btnConnection.setDisable(false);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Mots de passe ou Id invalide");
+                alert.setHeaderText("Champs invalide");
+                alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
+                alert.showAndWait();
+            });
+
         }
 
     }

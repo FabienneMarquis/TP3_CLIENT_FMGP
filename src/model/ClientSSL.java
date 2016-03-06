@@ -44,7 +44,6 @@ public class ClientSSL extends Thread {
                 String[] actionAndArgs = inputs[1].split("\\?");
                 String action = actionAndArgs[0];
                 String args = actionAndArgs[1];
-
                 switch (model) {
                     case "client": {
                         switch (action) {
@@ -52,30 +51,46 @@ public class ClientSSL extends Thread {
                                 fabriqueObjet.constructClient(args);
                                 break;
                         }
+                        break;
                     }
-
-                    break;
-                    case "employee":
+                    case "employee":{
                         switch (action) {
-                            case "signin":
+                            case "signin":{
 
                                 break;
-                            case "login":
-                                String prenom;
-                                String nom;
-                                for (String arg: args.split("&")){
-                                    switch (arg){
-                                        case "prenom":
-                                            nom = arg.split("=")[1];
+                            }
+
+                            case "login":{
+                                String prenom = "";
+                                String nom ="";
+                                String[] varvalues = args.split("&");
+                                for (String arg: varvalues){
+                                    String varname = arg.split("=")[0];
+                                    String value = arg.split("=")[1];
+                                    switch (varname){
+                                        case "prenom":{
+                                            prenom = value;
                                             break;
-                                        case "nom":
-                                            prenom = arg.split("=")[1];
+                                        }
+                                        case "nom":{
+                                            nom = value;
                                             break;
+                                        }
                                     }
                                 }
-                                Context.getInstance().loginAccepted(prenom,nom);
+                                System.out.println("NOM: " + nom);
+                                if(!prenom.isEmpty()&&!nom.isEmpty()){
+                                    Context.getInstance().loginAccepted(prenom,nom);
+                                }else {
+                                    Context.getInstance().loginRefused();
+                                }
+
                                 break;
+                            }
+
                         }
+                    }
+
                         break;
                     case "reservation":
                         switch (action) {
