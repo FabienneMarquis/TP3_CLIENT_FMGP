@@ -1,6 +1,11 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Fabiennemarquis on 16-03-05.
@@ -73,9 +78,9 @@ public class FabriqueObjet {
         int id=0;
         int id_client=0;
         int id_chambre=0;
-        String checkin="";
-        String checkout="";
-
+        Date checkin=null;
+        Date checkout=null;
+        DateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.CANADA);
         String[] infoC= info.split("&");
         for (int i =0;infoC.length==i;i++)   {
             String [] infoC1 = infoC[i].split("=");
@@ -90,16 +95,24 @@ public class FabriqueObjet {
                     id_chambre= Integer.parseInt(infoC1[1]);
                     break;
                 case "checkin":
-                    checkin= infoC1[1];
+                    try {
+                        checkin= format.parse(infoC1[1]);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "checkout":
-                    checkout= infoC1[1];
+                    try {
+                        checkout= format.parse(infoC1[1]);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
-        if(id!=0&&id_client!=0&&id_chambre!=0&&checkin!=""&&checkout!=""){
-            chambre= new Chambre(id, checkin, checkout,id_client, id_chambre);
-            chambres.add(chambre);
+        if(id!=0&&id_client!=0&&id_chambre!=0){
+            reservation= new Reservation(id, checkin, checkout,id_client, id_chambre);
+            reservations.add(reservation);
         }
     }
 

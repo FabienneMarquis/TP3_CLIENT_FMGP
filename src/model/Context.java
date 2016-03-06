@@ -191,11 +191,11 @@ public class Context extends Observable {
 
     /*
     * Info pour procédure d'envoit et réception de données
-    * model:action?varname1=valeur&varname2=valeur
+    * model@action?varname1=valeur&varname2=valeur
     * */
 
     public void modificationReservation(){
-        String modRez= "reservation:modify?id="+reservation.getIdReservation()+"id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
+        String modRez= "reservation@modify?id="+reservation.getIdReservation()+"id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
                 +"&checkin="+reservation.getDateCheckIn()
                 +"&checkout="+reservation.getDateCheckOut();
     }
@@ -227,7 +227,7 @@ public class Context extends Observable {
         clientSSL.run();
        clientSSL.isFermer();
         if(!clientSSL.isFermer()){
-            String infoConnection = "employee:connection:id="+numEmploye+":mot_de_passe="+passWordEmploye;
+            String infoConnection = "employee@connection?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
             clientSSL.send(infoConnection);
             //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date) thread
         }
@@ -237,6 +237,16 @@ public class Context extends Observable {
         if (clientSSL.isFermer())connection=false;
     }
 
+    public void findAndChange(int id, String type){
+        switch (type){
+            case "reservation":
+                while(reservation.getIdReservation()!=id)
+                break;
+            case"client":
+
+                break;
+        }
+    }
 
 
 }

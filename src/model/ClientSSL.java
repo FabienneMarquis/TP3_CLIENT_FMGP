@@ -13,6 +13,7 @@ public class ClientSSL extends Thread{
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private boolean fermer;
+    private FabriqueObjet fabriqueObjet;
 
 
     ClientSSL(String ip){
@@ -41,8 +42,8 @@ public class ClientSSL extends Thread{
                 String[] inputs = line.split(":");
                 switch (inputs[0]){
                     case "client":
-                        switch (inputs[2]){
-                            case "":
+                        switch (inputs[1]){
+                            case "init":
                                 break;
                         }
                         break;
@@ -50,10 +51,16 @@ public class ClientSSL extends Thread{
 
                         break;
                     case "reservation":
-                        switch (inputs[2]){
+                        String[] input2 = inputs[1].split("\\?");
+                        switch (input2[0]){
+                            case "init":
+                                fabriqueObjet.constructReservation(input2[1]);
+                                break;
                             case "new":
+                                fabriqueObjet.constructReservation(input2[1]);
                                 break;
                             case "modify":
+
                                 break;
                         }
                         break;
