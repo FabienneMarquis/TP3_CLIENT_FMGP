@@ -1,20 +1,16 @@
 package controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import model.Chambre;
 import model.Client;
 import model.Context;
 import model.Reservation;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -59,7 +55,7 @@ public class ControllerNewReservation implements Initializable {
         listClientExistant.setItems(FXCollections.observableArrayList(Context.getInstance().getClients()));
         listClientExistant.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> Context.getInstance().setClient(newValue));
-        chambreLibre.setItems(FXCollections.observableArrayList(Context.getInstance().getListChambre()));
+        chambreLibre.setItems(FXCollections.observableArrayList(Context.getInstance().getChambres()));
         chambreLibre.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> Context.getInstance().setChambre(newValue));
 //        dateCheckIn.setValue(LocalDate.now());

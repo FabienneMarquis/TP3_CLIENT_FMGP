@@ -1,12 +1,10 @@
 package model;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Properties;
 
 /**
  * Context est une classe qui sert pour contenir toute les informations specifique pour le fonctionnement de l'
@@ -18,20 +16,22 @@ public class Context extends Observable {
     private Client client;
     private Reservation reservation;
     private int port;
-    private String ip= "172.18.10.35";
+    private String ip= "127.0.0.1";
     private boolean connection;
     private int numEmploye;
     private String passWordEmploye;
     private String nomEmpl;
     private String prenomEmp;
     private Chambre chambre;
-    private List<Chambre> listChambre;
+    private List<Chambre> chambres;
     private List<Client> clients;
     private List<Reservation> reservations;
     private ClientSSL clientSSL;
 
     private Context(){
-
+        chambres = new ArrayList<>();
+        clients = new ArrayList<>();
+        reservations = new ArrayList<>();
     }
 
     /**
@@ -121,8 +121,8 @@ public class Context extends Observable {
         this.chambre = chambre;
     }
 
-    public List<Chambre> getListChambre() {
-        return listChambre;
+    public List<Chambre> getChambres() {
+        return chambres;
     }
 
     private void setListChambre(){
@@ -141,8 +141,8 @@ public class Context extends Observable {
         this.clients = clients;
     }
 
-    public void setListChambre(List<Chambre> listChambre) {
-        this.listChambre = listChambre;
+    public void setChambres(List<Chambre> chambres) {
+        this.chambres = chambres;
     }
 
     public int getNumEmploye() {
@@ -227,7 +227,7 @@ public class Context extends Observable {
         clientSSL.run();
        clientSSL.isFermer();
         if(!clientSSL.isFermer()){
-            String infoConnection = "employee@connection?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
+            String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
             clientSSL.send(infoConnection);
             //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date) thread
         }

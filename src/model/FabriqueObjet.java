@@ -43,7 +43,7 @@ public class FabriqueObjet {
         }
         if(id!=0&&nom!=""&&prenom!=""&&telephone!=0){
             client = new Client(id, nom, prenom, telephone);
-            clients.add(client);
+            Context.getInstance().getClients().add(client);
         }
 
     }
@@ -71,7 +71,7 @@ public class FabriqueObjet {
         }
         if(id!=0&&nom!=""&&description!=""){
             chambre= new Chambre(id, nom, description);
-            chambres.add(chambre);
+            Context.getInstance().getChambres().add(chambre);
         }
     }
     public void constructReservation(String info){
@@ -112,15 +112,7 @@ public class FabriqueObjet {
         }
         if(id!=0&&id_client!=0&&id_chambre!=0){
             reservation= new Reservation(id, checkin, checkout,id_client, id_chambre);
-            reservations.add(reservation);
+            Context.getInstance().getReservations().add(reservation);
         }
     }
-
-    public void pushListToContext(){
-        Context.getInstance().setListChambre(chambres);
-        Context.getInstance().setClients(clients);
-        Context.getInstance().setReservations(reservations);
-    };
-
-
 }

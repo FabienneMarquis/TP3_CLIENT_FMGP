@@ -8,7 +8,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 
-public class ClientSSL extends Thread{
+public class ClientSSL extends Thread {
     private SSLSocket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -16,15 +16,15 @@ public class ClientSSL extends Thread{
     private FabriqueObjet fabriqueObjet;
 
 
-    ClientSSL(String ip){
+    ClientSSL(String ip) {
         System.setProperty("javax.net.ssl.trustStore", "public.jks");
         SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
         try {
-            socket = (SSLSocket)ssf.createSocket(ip, 8888);
+            socket = (SSLSocket) ssf.createSocket(ip, 8888);
             socket.startHandshake();
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            fermer=false;
+            fermer = false;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,36 +36,48 @@ public class ClientSSL extends Thread{
         while (true) {
             String line = null;
             try {
-                fermer=false;
+                fermer = false;
                 line = bufferedReader.readLine();
                 System.out.println(line);
-                String[] inputs = line.split(":");
-                switch (inputs[0]){
-                    case "client":
-                        switch (inputs[1]){
-                            case "init":
+                String[] inputs = line.split("@");
+                String model = inputs[0];
+                String[] actionAndArgs = inputs[1].split("\\?");
+                String action = actionAndArgs[0];
+                String args = actionAndArgs[1];
+
+                switch (model) {
+                    case "client": {
+                        switch (action) {
+                            case "all":
+                                fabriqueObjet.constructClient(args);
+                                break;
+                        }
+                    }
+
+                    break;
+                    case "employee":
+                        switch (action) {
+                            case "signin":
+
+                                break;
+                            case "login":
+
                                 break;
                         }
                         break;
-                    case "employee":
-
-                        break;
                     case "reservation":
-                        String[] input2 = inputs[1].split("\\?");
-                        switch (input2[0]){
-                            case "init":
-                                fabriqueObjet.constructReservation(input2[1]);
-                                break;
-                            case "new":
-                                fabriqueObjet.constructReservation(input2[1]);
-                                break;
-                            case "modify":
-
+                        switch (action) {
+                            case "all":
+                                fabriqueObjet.constructReservation(args);
                                 break;
                         }
                         break;
                     case "chambre":
-
+                        switch (action) {
+                            case "all":
+                                fabriqueObjet.contructChambre(args);
+                                break;
+                        }
                         break;
                 }
             } catch (IOException e) {
@@ -75,32 +87,34 @@ public class ClientSSL extends Thread{
                 break;
         }
     }
+
     public boolean close() {
-        fermer=false;
+        fermer = false;
         try {
             socket.close();
-            fermer=true;
+            fermer = true;
         } catch (IOException e1) {
             //e1.printStackTrace();
-            fermer=false;
+            fermer = false;
         }
         try {
             bufferedReader.close();
-            fermer=true;
+            fermer = true;
         } catch (IOException e1) {
             // e1.printStackTrace();
-            fermer=false;
+            fermer = false;
         }
         try {
             bufferedWriter.close();
-            fermer=true;
+            fermer = true;
         } catch (IOException e1) {
             //e1.printStackTrace();
-            fermer=false;
+            fermer = false;
         }
         return fermer;
     }
-    public void send(String msg){
+
+    public void send(String msg) {
         try {
             bufferedWriter.write(msg + "\n");
             bufferedWriter.flush();
@@ -109,8 +123,9 @@ public class ClientSSL extends Thread{
             close();
         }
     }
+
     public static void main(String args[]) throws Exception {
-        ClientSSL clientSSL = new ClientSSL("172.18.10.35");
+        ClientSSL clientSSL = new ClientSSL("127.0.0.1");
         clientSSL.start();
         clientSSL.send("Hello");
 
