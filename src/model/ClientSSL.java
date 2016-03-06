@@ -61,7 +61,19 @@ public class ClientSSL extends Thread {
 
                                 break;
                             case "login":
-
+                                String prenom;
+                                String nom;
+                                for (String arg: args.split("&")){
+                                    switch (arg){
+                                        case "prenom":
+                                            nom = arg.split("=")[1];
+                                            break;
+                                        case "nom":
+                                            prenom = arg.split("=")[1];
+                                            break;
+                                    }
+                                }
+                                Context.getInstance().loginAccepted(prenom,nom);
                                 break;
                         }
                         break;

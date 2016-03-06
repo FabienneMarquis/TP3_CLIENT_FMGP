@@ -37,29 +37,35 @@ public class ControllerConnection implements Initializable, Observer {
     void connectionServer(ActionEvent event) {
 
         if (textNoEmploye.getText().isEmpty() || textMotPasse.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Connection");
-            alert.setHeaderText("Champs invalide");
-            alert.setContentText("Vous n'avez pas entrer votre numéro d'employé ou mot de passe correctement. ");
-            alert.showAndWait();
+            displayChampsErreur();
         } else {
-            //lancer la connection
-            Context.getInstance().setNumEmploye(Integer.parseInt(textNoEmploye.getText()));
-            Context.getInstance().setPassWordEmploye(textMotPasse.getText());
-            Context.getInstance().connectServeur();
-            if (Context.getInstance().isConnection()==false) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Mots de passe ou Id invalide");
-                alert.setHeaderText("Champs invalide");
-                alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
-                alert.showAndWait();
-            }else if (Context.getInstance().isConnection()==true){
-                textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
+            try {
+                int numEmp = Integer.parseInt(textNoEmploye.getText());
+                Context.getInstance().login(numEmp, textMotPasse.getText());
+                if (Context.getInstance().isLoggedIn()==false) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Mots de passe ou Id invalide");
+                    alert.setHeaderText("Champs invalide");
+                    alert.setContentText("Votre numéro d'employé ou votre mots de passe est incorrect \n ou ne fait pas partie de notre base de données");
+                    alert.showAndWait();
+                }else if (Context.getInstance().isLoggedIn()==true){
+                    textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
+                }
+            }catch (Exception e){
+                displayChampsErreur();
             }
+            //lancer la connection
+
         }
 
     }
-
+    private void displayChampsErreur(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Connection");
+        alert.setHeaderText("Champs invalide");
+        alert.setContentText("Vous n'avez pas entrer votre numéro d'employé ou mot de passe correctement. ");
+        alert.showAndWait();
+    }
     @FXML
     void deconnectionServeur(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -76,14 +82,15 @@ public class ControllerConnection implements Initializable, Observer {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnDeconnection.setDisable(true);
+        Context.getInstance().addObserver(this);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (Context.getInstance().isConnection() == true) {
+        if (Context.getInstance().isLoggedIn() == true) {
             btnDeconnection.setDisable(false);
             btnConnection.setDisable(true);
-        } else if (Context.getInstance().isConnection() == false) {
+        } else if (Context.getInstance().isLoggedIn() == false) {
             btnDeconnection.setDisable(true);
             btnConnection.setDisable(false);
         }

@@ -35,7 +35,7 @@ public class ControllerTab implements Initializable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(Context.getInstance().isConnection()==true){
+        if(Context.getInstance().isLoggedIn()==true){
             tabReservation.setDisable(false);
             tabNewReservation.setDisable(false);
             tabClient.setDisable(false);

@@ -19,7 +19,7 @@ public class Context extends Observable {
     private String ip= "127.0.0.1";
     private boolean connection;
     private int numEmploye;
-    private String passWordEmploye;
+    private String passwordEmploye;
     private String nomEmpl;
     private String prenomEmp;
     private Chambre chambre;
@@ -27,11 +27,14 @@ public class Context extends Observable {
     private List<Client> clients;
     private List<Reservation> reservations;
     private ClientSSL clientSSL;
+    private Employee employee;
 
     private Context(){
         chambres = new ArrayList<>();
         clients = new ArrayList<>();
         reservations = new ArrayList<>();
+        clientSSL= new ClientSSL(ip);
+        clientSSL.start();
     }
 
     /**
@@ -153,12 +156,12 @@ public class Context extends Observable {
         this.numEmploye = numEmploye;
     }
 
-    public String getPassWordEmploye() {
-        return passWordEmploye;
+    public String getPasswordEmploye() {
+        return passwordEmploye;
     }
 
-    public void setPassWordEmploye(String passWordEmploye) {
-        this.passWordEmploye = passWordEmploye;
+    public void setPasswordEmploye(String passwordEmploye) {
+        this.passwordEmploye = passwordEmploye;
     }
 
     public Client getClient() {
@@ -169,8 +172,8 @@ public class Context extends Observable {
         return reservation;
     }
 
-    public boolean isConnection() {
-        return connection;
+    public boolean isLoggedIn() {
+        return numEmploye > 0 && !prenomEmp.isEmpty() && !nomEmpl.isEmpty() && !passwordEmploye.isEmpty();
     }
 
 
@@ -221,14 +224,16 @@ public class Context extends Observable {
 
     }
 
-    public void connectServeur(){
-        clientSSL= new ClientSSL(ip);
-        clientSSL.start();
+    public void login(int numEmploye, String passWordEmploye){
         if(!clientSSL.isFermer()){
             String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
             clientSSL.send(infoConnection);
-            //cosntruire liste de Chambres, liste Clients et Liste réservation (selon critère de date) thread
         }
+    }
+    public void loginAccepted(String prenomEmp, String nomEmpl){
+        this.prenomEmp = prenomEmp;
+        this.nomEmpl = nomEmpl;
+        notifyObservers();
     }
 
     public void fermetureConnect(){clientSSL.close();
