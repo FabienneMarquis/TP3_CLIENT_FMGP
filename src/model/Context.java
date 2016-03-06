@@ -135,10 +135,6 @@ public class Context extends Observable {
         return chambres;
     }
 
-    private void setListChambre() {
-        //connection avec le serveur
-    }
-
     public List<Reservation> getReservations() {
         return reservations;
     }
@@ -213,23 +209,18 @@ public class Context extends Observable {
 
     public void modificaitonClient() {
         String modClient = "client@modify?id=" + client.getIdClient() + "&nom=" + client.getNom() + "&" + client.getPrenom() + ":" + client.getTelephone();
-        //envoit au thread
+        clientSSL.send(modClient);
     }
 
     public void newClient(String nom, String prenom, int phone) {
         String newClient = "client@new:" + nom + ":" + prenom + ":" + phone;
-        //retourne idClient
+        clientSSL.send(newClient);
     }
 
     public void newReservation() {
         String newRez = "reservation@new?id_client=" + reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
                 + "&checkin=" + reservation.getDateCheckIn() + "&checkout=" + reservation.getDateCheckOut();
-
-
-        //création buffer
-        //après le retour du serveur ajouter le ID de la réservation puis ajouter la réservation à la liste
-        // reservations.add(reservation);
-
+        clientSSL.send(newRez);
     }
 
     public void login(int numEmploye, String passWordEmploye) {
