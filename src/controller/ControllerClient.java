@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import model.Client;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,7 +32,7 @@ public class ControllerClient implements Initializable{
     private Button btnSave;
 
     @FXML
-    private ListView<?> listViewReservationParClient;
+    private ListView<Client> listViewReservationParClient;
 
     @FXML
     void delete(ActionEvent event) {
@@ -45,6 +46,6 @@ public class ControllerClient implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//liste des clients
+
     }
 }
