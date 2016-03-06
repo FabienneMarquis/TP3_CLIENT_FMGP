@@ -2,13 +2,18 @@ package model;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 
 /**
  * Context est une classe qui sert pour contenir toute les informations specifique pour le fonctionnement de l'
  * application. Conntext est accesssible partout dans l'application par l'usage d'un singleton.
+ *
  * @author Gabriel_Fabienne
  */
 public class Context extends Observable {
@@ -16,7 +21,7 @@ public class Context extends Observable {
     private Client client;
     private Reservation reservation;
     private int port;
-    private String ip= "127.0.0.1";
+    private String ip = "127.0.0.1";
     private boolean connection;
     private int numEmploye;
     private String passwordEmploye;
@@ -29,26 +34,27 @@ public class Context extends Observable {
     private ClientSSL clientSSL;
     private Employee employee;
 
-    private Context(){
+    private Context() {
         chambres = new ArrayList<>();
         clients = new ArrayList<>();
         reservations = new ArrayList<>();
-        clientSSL= new ClientSSL(ip);
+        clientSSL = new ClientSSL(ip);
         clientSSL.start();
     }
 
     /**
      * Get instance du singleton
+     *
      * @return instance unique
      */
-    public static Context getInstance(){
-        if(context == null){
+    public static Context getInstance() {
+        if (context == null) {
             context = new Context();
         }
         return context;
     }
 
-//
+    //
 //    /**
 //     * get serveur thread
 //     * @return
@@ -81,14 +87,15 @@ public class Context extends Observable {
 //        this.clientThread = clientThread;
 //    }
 //
-    public List<Client> getClients(){
+    public List<Client> getClients() {
         return clients;
     }
 
-    public void addClientFromServer(){
+    public void addClientFromServer() {
         //ajouter les clients du serveur
     }
-    public void saveClientServeur(){
+
+    public void saveClientServeur() {
 
     }
 
@@ -128,9 +135,9 @@ public class Context extends Observable {
         return chambres;
     }
 
-    private void setListChambre(){
+    private void setListChambre() {
         //connection avec le serveur
-            }
+    }
 
     public List<Reservation> getReservations() {
         return reservations;
@@ -179,10 +186,11 @@ public class Context extends Observable {
 
     /**
      * Return local ip if null or the value set
+     *
      * @return
      */
     public String getIp() {
-        if(ip == null){
+        if (ip == null) {
             try {
                 ip = InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
@@ -197,25 +205,25 @@ public class Context extends Observable {
     * model@action?varname1=valeur&varname2=valeur
     * */
 
-    public void modificationReservation(){
-        String modRez= "reservation@modify?id="+reservation.getIdReservation()+"id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
-                +"&checkin="+reservation.getDateCheckIn()
-                +"&checkout="+reservation.getDateCheckOut();
+    public void modificationReservation() {
+        String modRez = "reservation@modify?id=" + reservation.getIdReservation() + "id_client=" + reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
+                + "&checkin=" + reservation.getDateCheckIn()
+                + "&checkout=" + reservation.getDateCheckOut();
     }
 
-    public void modificaitonClient(){
-        String modClient = "client@modify?id="+client.getIdClient()+"&nom="+client.getNom()+"&"+client.getPrenom()+":"+client.getTelephone();
+    public void modificaitonClient() {
+        String modClient = "client@modify?id=" + client.getIdClient() + "&nom=" + client.getNom() + "&" + client.getPrenom() + ":" + client.getTelephone();
         //envoit au thread
     }
 
-    public void newClient(String nom, String prenom, int phone){
-        String newClient= "client@new:"+nom+":"+prenom+":"+phone;
+    public void newClient(String nom, String prenom, int phone) {
+        String newClient = "client@new:" + nom + ":" + prenom + ":" + phone;
         //retourne idClient
     }
 
-    public void newReservation(){
-        String newRez= "reservation@new?id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
-                +"&checkin="+reservation.getDateCheckIn()+"&checkout="+reservation.getDateCheckOut();
+    public void newReservation() {
+        String newRez = "reservation@new?id_client=" + reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
+                + "&checkin=" + reservation.getDateCheckIn() + "&checkout=" + reservation.getDateCheckOut();
 
 
         //création buffer
@@ -224,33 +232,93 @@ public class Context extends Observable {
 
     }
 
-    public void login(int numEmploye, String passWordEmploye){
-        if(!clientSSL.isFermer()){
-            String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
+    public void login(int numEmploye, String passWordEmploye) {
+        if (!clientSSL.isFermer()) {
+            String infoConnection = "employee@login?id=" + numEmploye + "&mot_de_passe=" + passWordEmploye;
             clientSSL.send(infoConnection);
         }
     }
-    public void loginAccepted(String prenomEmp, String nomEmpl){
+
+    public void loginAccepted(String prenomEmp, String nomEmpl) {
         this.prenomEmp = prenomEmp;
         this.nomEmpl = nomEmpl;
         notifyObservers();
     }
 
-    public void fermetureConnect(){clientSSL.close();
-        if (clientSSL.isFermer())connection=false;
+    public void fermetureConnect() {
+        clientSSL.close();
+        if (clientSSL.isFermer()) connection = false;
     }
 
-    public void findAndChange(int id, String type){
-        switch (type){
+    public void findAndChange(int id, String type, String info) {
+        switch (type) {
             case "reservation":
-                int i= 0;
-                while(reservation.getIdReservation()!=id && i<reservations.size())
+                findReservation(id, info);
                 break;
-            case"client":
-
+            case "client":
+                findClient(id,info);
                 break;
         }
     }
 
+    private void findReservation(int id, String info) {
+        for (int i = 0; i < reservations.size(); i++) {
+            if (reservations.get(i).getIdReservation() == id) {
+                this.reservation = reservations.get(i);
+                DateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.CANADA);
+                String[] infoC = info.split("&");
+                for (int a = 0; infoC.length == a; a++) {
+                    String[] infoC1 = infoC[a].split("=");
+                    switch (infoC1[0]) {
+                        case "id_client":
+                            reservation.setIdClient(Integer.parseInt(infoC1[1]));
+                            break;
+                        case "id_chambre":
+                            reservation.setIdChambre(Integer.parseInt(infoC1[1]));
+                            break;
+                        case "checkin":
+                            try {
+                                reservation.setDateCheckIn(format.parse(infoC1[1]));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case "checkout":
+                            try {
+                                reservation.setDateCheckOut(format.parse(infoC1[1]));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void findClient(int id, String info) {
+        for (int i = 0; i < clients.size(); i++) {
+            if (clients.get(i).getIdClient() == id) {
+                this.client = clients.get(i);
+                String[] infoC= info.split("&");
+                for (int a =0;infoC.length==a;a++)   {
+                    String [] infoC1 = infoC[a].split("=");
+                    switch(infoC1[0]){
+                        case "nom":
+                            client.setNom(infoC1[1]);
+                            break;
+                        case "prenom":
+                            client.setPrenom(infoC1[1]);
+                            break;
+                        case "telephone":
+                            client.setTelephone(Integer.parseInt(infoC1[1]));
+                            break;
+
+                    }
+                }
+            }
+        }
+    }
 
 }
