@@ -223,8 +223,7 @@ public class Context extends Observable {
 
     public void connectServeur(){
         clientSSL= new ClientSSL(ip);
-        clientSSL.run();
-       clientSSL.isFermer();
+        clientSSL.start();
         if(!clientSSL.isFermer()){
             String infoConnection = "employee@login?id="+numEmploye+"&mot_de_passe="+passWordEmploye;
             clientSSL.send(infoConnection);

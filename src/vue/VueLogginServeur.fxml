@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerConnection">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerConnection">
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -43,7 +43,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Text>
-                  <PasswordField>
+                  <PasswordField fx:id="textMotPasse">
                      <HBox.margin>
                         <Insets right="180.0" />
                      </HBox.margin>

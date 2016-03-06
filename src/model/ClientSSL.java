@@ -89,27 +89,21 @@ public class ClientSSL extends Thread {
     }
 
     public boolean close() {
-        fermer = false;
+        fermer = true;
         try {
             socket.close();
-            fermer = true;
         } catch (IOException e1) {
             //e1.printStackTrace();
-            fermer = false;
         }
         try {
             bufferedReader.close();
-            fermer = true;
         } catch (IOException e1) {
             // e1.printStackTrace();
-            fermer = false;
         }
         try {
             bufferedWriter.close();
-            fermer = true;
         } catch (IOException e1) {
             //e1.printStackTrace();
-            fermer = false;
         }
         return fermer;
     }
