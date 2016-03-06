@@ -201,19 +201,18 @@ public class Context extends Observable {
     }
 
     public void modificaitonClient(){
-        String modClient = "client:modify?id="+client.getIdClient()+"&nom="+client.getNom()+"&"+client.getPrenom()+":"+client.getTelephone();
+        String modClient = "client@modify?id="+client.getIdClient()+"&nom="+client.getNom()+"&"+client.getPrenom()+":"+client.getTelephone();
         //envoit au thread
     }
 
     public void newClient(String nom, String prenom, int phone){
-        String newClient= "client:new:"+nom+":"+prenom+":"+phone;
+        String newClient= "client@new:"+nom+":"+prenom+":"+phone;
         //retourne idClient
     }
 
     public void newReservation(){
-        String newRez= "reservation:new?id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
-                +"&checkin="+reservation.getDateCheckIn()
-                +"&checkout="+reservation.getDateCheckOut();
+        String newRez= "reservation@new?id_client="+reservation.getIdClient()+"&id_chambre="+reservation.getIdChambre()+""
+                +"&checkin="+reservation.getDateCheckIn()+"&checkout="+reservation.getDateCheckOut();
 
 
         //création buffer
@@ -240,7 +239,8 @@ public class Context extends Observable {
     public void findAndChange(int id, String type){
         switch (type){
             case "reservation":
-                while(reservation.getIdReservation()!=id)
+                int i= 0;
+                while(reservation.getIdReservation()!=id && i<reservations.size())
                 break;
             case"client":
 
