@@ -202,14 +202,31 @@ public class Context extends Observable {
     * */
 
     public void modificationReservation() {
-        String modRez = "reservation@modify?id=" + reservation.getIdReservation() + "id_client=" + reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
+        String modRez = "reservation@modify?id=" + reservation.getIdReservation() + "id_client=" +
+                reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
                 + "&checkin=" + reservation.getDateCheckIn()
                 + "&checkout=" + reservation.getDateCheckOut();
+        clientSSL.send(modRez);
     }
 
     public void modificaitonClient() {
-        String modClient = "client@modify?id=" + client.getIdClient() + "&nom=" + client.getNom() + "&" + client.getPrenom() + ":" + client.getTelephone();
+        String modClient = "client@modify?id=" + client.getIdClient() + "&nom=" + client.getNom() +
+                "&" + client.getPrenom() + ":" + client.getTelephone();
         clientSSL.send(modClient);
+    }
+
+    public void supressionClient(){
+        String msg = "client@delete?id="+client.getIdClient()+"&nom=" + client.getNom() + "&"
+                + client.getPrenom() + ":" + client.getTelephone();
+        clientSSL.send(msg);
+    }
+
+    public void supressionReservation(){
+        String msg = "reservation@delete?id=" + reservation.getIdReservation() + "id_client=" +
+                reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
+                + "&checkin=" + reservation.getDateCheckIn()
+                + "&checkout=" + reservation.getDateCheckOut();
+        clientSSL.send(msg);
     }
 
     public void newClient(String nom, String prenom, int phone) {
@@ -218,7 +235,8 @@ public class Context extends Observable {
     }
 
     public void newReservation() {
-        String newRez = "reservation@new?id_client=" + reservation.getIdClient() + "&id_chambre=" + reservation.getIdChambre() + ""
+        String newRez = "reservation@new?id_client=" + reservation.getIdClient() + "&id_chambre="
+                + reservation.getIdChambre() + ""
                 + "&checkin=" + reservation.getDateCheckIn() + "&checkout=" + reservation.getDateCheckOut();
         clientSSL.send(newRez);
     }
@@ -310,6 +328,16 @@ public class Context extends Observable {
                 }
             }
         }
+    }
+
+    public List listReservationSelonClient(){
+        List<Reservation> list=null;
+        for (int i = 0; i < reservations.size(); i++) {
+            if (reservations.get(i).getIdClient() == this.client.getIdClient()) {
+                list.add(reservations.get(i));
+            }
+        }
+        return list;
     }
 
 }

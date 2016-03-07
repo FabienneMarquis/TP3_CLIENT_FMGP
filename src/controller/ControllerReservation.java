@@ -5,10 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import model.Chambre;
 import model.Context;
 import model.Reservation;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -35,7 +37,7 @@ public class ControllerReservation implements Initializable
         private DatePicker dateCheckOut;
 
         @FXML
-        private ComboBox<?> chambreDisponible;
+        private ComboBox<Chambre> chambreDisponible;
 
         @FXML
         private Button btnsupprimer;
@@ -53,7 +55,7 @@ public class ControllerReservation implements Initializable
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.get() == ButtonType.OK) {
-                        //supprimer la  réservation
+                        Context.getInstance().supressionReservation();
                 }
         }
 
@@ -67,16 +69,24 @@ public class ControllerReservation implements Initializable
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.get() == ButtonType.OK) {
-                        //enregistrer les modification de la réservation
+                        Context.getInstance().getReservation().setIdChambre(Context.getInstance().getChambre().getIdChambre());
+                        Context.getInstance().getReservation().setDateCheckIn(new Date(dateCheckIn.getValue().toEpochDay()));
+                        Context.getInstance().getReservation().setDateCheckOut(new Date(dateCheckOut.getValue().toEpochDay()));
+                        Context.getInstance().modificationReservation();
                 }
         }
 
         @Override
         public void initialize(URL location, ResourceBundle resources) {
+                btnsupprimer.setDisable(true);
                 listViewClientTOUT.setItems(FXCollections.observableArrayList(Context.getInstance().getReservations()));
                 listViewClientTOUT.getSelectionModel().selectedItemProperty().addListener(
                         (observable, oldValue, newValue) -> {
-
+                                btnsupprimer.setDisable(false);
+                               Context.getInstance().setReservation(newValue);
                         });
+                chambreDisponible.setItems(FXCollections.observableArrayList(Context.getInstance().getChambres()));
+                chambreDisponible.getSelectionModel().selectedItemProperty().addListener(
+                        (observable, oldValue, newValue) -> Context.getInstance().setChambre(newValue));
         }
 }
