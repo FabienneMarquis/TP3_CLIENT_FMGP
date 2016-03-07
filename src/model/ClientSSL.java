@@ -47,7 +47,21 @@ public class ClientSSL extends Thread {
                 switch (model) {
                     case "client": {
                         switch (action) {
-                            case "all":
+                            case "init":
+                                fabriqueObjet.constructClient(args);
+                                break;
+                            case"modify":
+                                int id=0;
+                                for (String arg: args.split("&")){
+                                    switch (arg){
+                                        case "id_client":
+                                            id = Integer.parseInt(arg.split("=")[1]);
+                                            break;
+                                    }
+                                }
+                                Context.getInstance().findAndChange(id, model, args);
+                                break;
+                            case"new":
                                 fabriqueObjet.constructClient(args);
                                 break;
                         }
@@ -94,8 +108,22 @@ public class ClientSSL extends Thread {
                         break;
                     case "reservation":
                         switch (action) {
-                            case "all":
+                            case "init":
                                 fabriqueObjet.constructReservation(args);
+                                break;
+                            case"new":
+                                fabriqueObjet.constructReservation(args);
+                                break;
+                            case"modify":
+                                int id=0;
+                                for (String arg: args.split("&")){
+                                    switch (arg){
+                                        case "id_reservation":
+                                            id = Integer.parseInt(arg.split("=")[1]);
+                                            break;
+                                    }
+                                }
+                                Context.getInstance().findAndChange(id, model, args);
                                 break;
                         }
                         break;

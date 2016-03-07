@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TP3_CLIENT_FMGP:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TP3_CLIENT_FMGP_jar</output-path>
+    <root id="archive" name="TP3_CLIENT_FMGP.jar">
+      <element id="module-output" name="TP3_CLIENT_FMGP" />
+      <element id="file-copy" path="$PROJECT_DIR$/my_home.crt" />
+      <element id="file-copy" path="$PROJECT_DIR$/public.jks" />
+    </root>
+  </artifact>
+</component>

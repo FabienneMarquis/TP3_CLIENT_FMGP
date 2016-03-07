@@ -52,7 +52,6 @@ public class FabriqueObjet {
         int id=0;
         String nom="";
         String description="";
-
         String[] infoC= info.split("&");
         for (int i =0;infoC.length==i;i++)   {
             String [] infoC1 = infoC[i].split("=");
@@ -89,21 +88,21 @@ public class FabriqueObjet {
                     id = Integer.parseInt(infoC1[1]);
                     break;
                 case "id_client":
-                    id_client= Integer.parseInt(infoC1[1]);
+                    id_client = Integer.parseInt(infoC1[1]);
                     break;
                 case "id_chambre":
-                    id_chambre= Integer.parseInt(infoC1[1]);
+                    id_chambre = Integer.parseInt(infoC1[1]);
                     break;
                 case "checkin":
                     try {
-                        checkin= format.parse(infoC1[1]);
+                        checkin = format.parse(infoC1[1]);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     break;
                 case "checkout":
                     try {
-                        checkout= format.parse(infoC1[1]);
+                        checkout = format.parse(infoC1[1]);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
