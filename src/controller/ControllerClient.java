@@ -10,10 +10,12 @@ import model.Context;
 import model.Reservation;
 
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ControllerClient implements Initializable{
+public class ControllerClient implements Initializable, Observer{
 
     @FXML
     private ListView<Client> listViewClientTOUT;
@@ -48,7 +50,6 @@ public class ControllerClient implements Initializable{
         if (result.get() == ButtonType.OK) {
             Context.getInstance().supressionClient();
         }
-
     }
 
     @FXML
@@ -67,7 +68,6 @@ public class ControllerClient implements Initializable{
             Context.getInstance().getClient().setTelephone(Integer.parseInt(telephoneClient.getText()));
             Context.getInstance().modificaitonClient();
         }
-
     }
 
     @Override
@@ -78,9 +78,14 @@ public class ControllerClient implements Initializable{
                 (observable, oldValue, newValue) -> {
                     btnSupprimer.setDisable(false);
                     Context.getInstance().setClient(newValue);
-                    listViewReservationParClient.setItems(FXCollections.observableArrayList(
-                            Context.getInstance().listReservationSelonClient()));
+                   // listViewReservationParClient.setItems(
+                            //Context.getInstance().listReservationSelonClient());
                 });
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        listViewClientTOUT.setItems(Context.getInstance().getClientsOb());
     }
 }

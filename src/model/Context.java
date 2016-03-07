@@ -367,8 +367,8 @@ public class Context extends Observable {
         }
     }
 
-    public List listReservationSelonClient(){
-        List<Reservation> list=null;
+    public ObservableList listReservationSelonClient(){
+        ObservableList<Reservation> list=null;
         for (int i = 0; i < reservations.size(); i++) {
             if (reservations.get(i).getIdClient() == this.client.getIdClient()) {
                 list.add(reservations.get(i));

@@ -10,11 +10,9 @@ import model.Context;
 import model.Reservation;
 
 import java.net.URL;
-import java.util.Date;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class ControllerReservation implements Initializable
+public class ControllerReservation implements Initializable, Observer
 {
 
 
@@ -88,5 +86,10 @@ public class ControllerReservation implements Initializable
                 chambreDisponible.setItems(FXCollections.observableArrayList(Context.getInstance().getChambres()));
                 chambreDisponible.getSelectionModel().selectedItemProperty().addListener(
                         (observable, oldValue, newValue) -> Context.getInstance().setChambre(newValue));
+        }
+
+        @Override
+        public void update(Observable o, Object arg) {
+                listViewClientTOUT.setItems(Context.getInstance().getReservationsOb());
         }
 }

@@ -11,11 +11,9 @@ import model.Context;
 import model.Reservation;
 
 import java.net.URL;
-import java.util.Date;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class ControllerNewReservation implements Initializable {
+public class ControllerNewReservation implements Initializable, Observer {
 
     @FXML
     private ListView<Client> listClientExistant;
@@ -52,7 +50,7 @@ public class ControllerNewReservation implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        listClientExistant.setItems(FXCollections.observableArrayList(Context.getInstance().getClients()));
+        listClientExistant.setItems(Context.getInstance().getClientsOb());
         listClientExistant.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> Context.getInstance().setClient(newValue));
         chambreLibre.setItems(FXCollections.observableArrayList(Context.getInstance().getChambres()));
@@ -81,6 +79,11 @@ public class ControllerNewReservation implements Initializable {
 //        dateCheckOut.setDayCellFactory(dayCellFactory);
 //        dateCheckOut.setValue(dateCheckOut.getValue().plusDays(1));
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        listClientExistant.setItems(Context.getInstance().getClientsOb());
     }
 }
 
