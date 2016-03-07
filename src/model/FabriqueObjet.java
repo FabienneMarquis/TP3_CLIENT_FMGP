@@ -45,7 +45,7 @@ public class FabriqueObjet {
         System.out.println(id+nom+prenom+telephone);
         if(id!=0&&nom!=""&&prenom!=""&&telephone!=0){
             client = new Client(id, nom, prenom, telephone);
-            Context.getInstance().getClients().add(client);
+            Context.getInstance().getClientsOb().add(client);
         }
 
     }
@@ -67,7 +67,6 @@ public class FabriqueObjet {
                 case "description":
                     description= infoC1[1];
                     break;
-
             }
         }
         if(id!=0&&nom!=""&&description!=""){
@@ -113,7 +112,7 @@ public class FabriqueObjet {
         }
         if(id!=0&&id_client!=0&&id_chambre!=0){
             reservation= new Reservation(id, checkin, checkout,id_client, id_chambre);
-            Context.getInstance().getReservations().add(reservation);
+            Context.getInstance().getReservationsOb().add(reservation);
         }
     }
 }

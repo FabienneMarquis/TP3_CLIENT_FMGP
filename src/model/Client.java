@@ -55,4 +55,14 @@ public class Client {
     public int getIdClient() {
         return idClient;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "idClient=" + idClient +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", telephone=" + telephone +
+                '}';
+    }
 }

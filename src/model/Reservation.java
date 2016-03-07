@@ -67,4 +67,15 @@ public class Reservation {
     public void setIdChambre(int idChambre) {
         this.idChambre = idChambre;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "idReservation=" + idReservation +
+                ", dateCheckIn=" + dateCheckIn +
+                ", dateCheckOut=" + dateCheckOut +
+                ", idClient=" + idClient +
+                ", idChambre=" + idChambre +
+                '}';
+    }
 }

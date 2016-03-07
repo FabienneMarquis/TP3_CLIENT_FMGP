@@ -29,4 +29,13 @@ public class Chambre {
     public void setDescripChambre(String descripChambre) {
         this.descripChambre = descripChambre;
     }
+
+    @Override
+    public String toString() {
+        return "Chambre{" +
+                "idChambre=" + idChambre +
+                ", nomChambre='" + nomChambre + '\'' +
+                ", descripChambre='" + descripChambre + '\'' +
+                '}';
+    }
 }

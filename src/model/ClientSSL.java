@@ -168,6 +168,7 @@ public class ClientSSL extends Thread {
         try {
             bufferedWriter.write(msg + "\n");
             bufferedWriter.flush();
+            System.out.println(msg);
         } catch (IOException e) {
             e.printStackTrace();
             close();

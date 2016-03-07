@@ -11,6 +11,9 @@ import model.Context;
 import model.Reservation;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ControllerNewReservation implements Initializable, Observer {
@@ -31,21 +34,22 @@ public class ControllerNewReservation implements Initializable, Observer {
     private Button btnSave;
 
     @FXML
-    void save(ActionEvent event) {
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Sauvegarde");
-        alert.setHeaderText("Nouvelle Réservation");
-        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?" );
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
+    void save(ActionEvent event) throws ParseException {
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Sauvegarde");
+//        alert.setHeaderText("Nouvelle Réservation");
+//        alert.setContentText("Voulez-vous enregistrer cette nouvelle réservation?" );
+//        Optional<ButtonType> result = alert.showAndWait();
+//
+//        if (result.get() == ButtonType.OK) {
             //ajouter une nouvelle réservation
-            Reservation reservation = new Reservation(new Date(dateCheckIn.getValue().toEpochDay()), new Date(dateCheckOut.getValue().toEpochDay()),
-                    Context.getInstance().getClient().getIdClient(), Context.getInstance().getChambre().getIdChambre());
+            DateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.CANADA);
+            Reservation reservation = new Reservation(format.parse("2016-11-11"), format.parse("2016-11-15"),
+                    Context.getInstance().getClient().getIdClient(), 1);
             Context.getInstance().setReservation(reservation);
+           // Context.getInstance().setReservationsOb();
             Context.getInstance().newReservation();
-        }
+//        }
     }
 
     @Override
@@ -53,7 +57,7 @@ public class ControllerNewReservation implements Initializable, Observer {
         listClientExistant.setItems(Context.getInstance().getClientsOb());
         listClientExistant.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> Context.getInstance().setClient(newValue));
-        chambreLibre.setItems(FXCollections.observableArrayList(Context.getInstance().getChambres()));
+        chambreLibre.setItems(Context.getInstance().getChambres());
         chambreLibre.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> Context.getInstance().setChambre(newValue));
 //        dateCheckIn.setValue(LocalDate.now());
@@ -84,6 +88,7 @@ public class ControllerNewReservation implements Initializable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         listClientExistant.setItems(Context.getInstance().getClientsOb());
+        chambreLibre.setItems(Context.getInstance().getChambres());
     }
 }
 

@@ -32,18 +32,16 @@ public class Context extends Observable {
     private String nomEmpl;
     private String prenomEmp;
     private Chambre chambre;
-    private List<Chambre> chambres;
-    private List<Client> clients;
-    private List<Reservation> reservations;
+    private ObservableList<Chambre> chambres;
     private ClientSSL clientSSL;
     private Employee employee;
     private ObservableList<Client> clientsOb;
     private ObservableList<Reservation> reservationsOb;
 
     private Context() {
-        chambres = new ArrayList<>();
-        clients = new ArrayList<>();
-        reservations = new ArrayList<>();
+        chambres = FXCollections.observableArrayList(new ArrayList<>()) ;
+        clientsOb = FXCollections.observableArrayList(new ArrayList<>()) ;
+        clientsOb = FXCollections.observableArrayList(new ArrayList<>());
 
     }
 
@@ -93,32 +91,32 @@ public class Context extends Observable {
 //    }
 //
 
+    public void setClientsOb(ObservableList<Client> clientsOb) {
+        this.clientsOb = clientsOb;
+    }
+
+    public void setReservationsOb(ObservableList<Reservation> reservationsOb) {
+        this.reservationsOb = reservationsOb;
+    }
+
     public ObservableList<Client> getClientsOb() {
         return clientsOb;
     }
 
-    public void setClientsOb(ObservableList<Client> clientsOb) {
-        this.clientsOb = FXCollections.observableArrayList(clients);
-    }
 
     public ObservableList<Reservation> getReservationsOb() {
         return reservationsOb;
     }
 
-    public void setReservationsOb(ObservableList<Reservation> reservationsOb) {
-        this.reservationsOb = FXCollections.observableArrayList(reservations);
-    }
-
-    public List<Client> getClients() {
-        return clients;
-    }
 
     public void setClient(Client client) {
         this.client = client;
+
     }
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+      ;
     }
 
     public String getNomEmpl() {
@@ -143,26 +141,6 @@ public class Context extends Observable {
 
     public void setChambre(Chambre chambre) {
         this.chambre = chambre;
-    }
-
-    public List<Chambre> getChambres() {
-        return chambres;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
-    }
-
-    public void setChambres(List<Chambre> chambres) {
-        this.chambres = chambres;
     }
 
     public int getNumEmploye() {
@@ -193,6 +171,13 @@ public class Context extends Observable {
         return numEmploye > 0 && !prenomEmp.isEmpty() && !nomEmpl.isEmpty() && !passwordEmploye.isEmpty();
     }
 
+    public void setChambres(ObservableList<Chambre> chambres) {
+        this.chambres = chambres;
+    }
+
+    public ObservableList<Chambre> getChambres() {
+        return chambres;
+    }
 
     /**
      * Return local ip if null or the value set
@@ -252,9 +237,10 @@ public class Context extends Observable {
     }
 
     public void newReservation() {
+        DateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.CANADA);
         String newRez = "reservation@new?id_client=" + reservation.getIdClient() + "&id_chambre="
                 + reservation.getIdChambre() + ""
-                + "&checkin=" + reservation.getDateCheckIn() + "&checkout=" + reservation.getDateCheckOut();
+                + "&checkin=" + format.format(reservation.getDateCheckIn()) + "&checkout=" + format.format(reservation.getDateCheckOut());
         clientSSL.send(newRez);
     }
 
@@ -276,8 +262,8 @@ public class Context extends Observable {
         this.prenomEmp = prenomEmp;
         this.nomEmpl = nomEmpl;
         clientSSL.send("client@all");
-        clientSSL.send("reservation@all");
         clientSSL.send("chambre@all");
+        clientSSL.send("reservation@all");
         setChanged();
         notifyObservers();
 
@@ -308,9 +294,9 @@ public class Context extends Observable {
     }
 
     private void findReservation(int id, String info) {
-        for (int i = 0; i < reservations.size(); i++) {
-            if (reservations.get(i).getIdReservation() == id) {
-                this.reservation = reservations.get(i);
+        for (int i = 0; i < reservationsOb.size(); i++) {
+            if (reservationsOb.get(i).getIdReservation() == id) {
+                this.reservation = reservationsOb.get(i);
                 DateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.CANADA);
                 String[] infoC = info.split("&");
                 for (int a = 0; infoC.length == a; a++) {
@@ -344,9 +330,9 @@ public class Context extends Observable {
     }
 
     private void findClient(int id, String info) {
-        for (int i = 0; i < clients.size(); i++) {
-            if (clients.get(i).getIdClient() == id) {
-                this.client = clients.get(i);
+        for (int i = 0; i < clientsOb.size(); i++) {
+            if (clientsOb.get(i).getIdClient() == id) {
+                this.client = clientsOb.get(i);
                 String[] infoC= info.split("&");
                 for (int a =0;infoC.length==a;a++)   {
                     String [] infoC1 = infoC[a].split("=");
@@ -369,9 +355,9 @@ public class Context extends Observable {
 
     public ObservableList listReservationSelonClient(){
         ObservableList<Reservation> list=null;
-        for (int i = 0; i < reservations.size(); i++) {
-            if (reservations.get(i).getIdClient() == this.client.getIdClient()) {
-                list.add(reservations.get(i));
+        for (int i = 0; i < reservationsOb.size(); i++) {
+            if (reservationsOb.get(i).getIdClient() == this.client.getIdClient()) {
+                list.add(reservationsOb.get(i));
             }
         }
         return list;
