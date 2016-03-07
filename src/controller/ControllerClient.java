@@ -73,7 +73,7 @@ public class ControllerClient implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnSupprimer.setDisable(true);
-        listViewClientTOUT.setItems(FXCollections.observableArrayList(Context.getInstance().getClient()));
+        listViewClientTOUT.setItems(Context.getInstance().getClientsOb());
         listViewClientTOUT.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     btnSupprimer.setDisable(false);

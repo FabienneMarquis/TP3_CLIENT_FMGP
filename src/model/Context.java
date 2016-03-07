@@ -1,5 +1,9 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -33,6 +37,8 @@ public class Context extends Observable {
     private List<Reservation> reservations;
     private ClientSSL clientSSL;
     private Employee employee;
+    private ObservableList<Client> clientsOb;
+    private ObservableList<Reservation> reservationsOb;
 
     private Context() {
         chambres = new ArrayList<>();
@@ -86,16 +92,25 @@ public class Context extends Observable {
 //        this.clientThread = clientThread;
 //    }
 //
+
+    public ObservableList<Client> getClientsOb() {
+        return clientsOb;
+    }
+
+    public void setClientsOb(ObservableList<Client> clientsOb) {
+        this.clientsOb = FXCollections.observableArrayList(clients);
+    }
+
+    public ObservableList<Reservation> getReservationsOb() {
+        return reservationsOb;
+    }
+
+    public void setReservationsOb(ObservableList<Reservation> reservationsOb) {
+        this.reservationsOb = FXCollections.observableArrayList(reservations);
+    }
+
     public List<Client> getClients() {
         return clients;
-    }
-
-    public void addClientFromServer() {
-        //ajouter les clients du serveur
-    }
-
-    public void saveClientServeur() {
-
     }
 
     public void setClient(Client client) {
@@ -232,7 +247,7 @@ public class Context extends Observable {
     }
 
     public void newClient(String nom, String prenom, int phone) {
-        String newClient = "client@new:" + nom + ":" + prenom + ":" + phone;
+        String newClient = "client@new?nom=" + nom + "&prenom=" + prenom + "&telephone=" + phone;
         clientSSL.send(newClient);
     }
 

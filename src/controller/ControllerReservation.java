@@ -79,7 +79,7 @@ public class ControllerReservation implements Initializable
         @Override
         public void initialize(URL location, ResourceBundle resources) {
                 btnsupprimer.setDisable(true);
-                listViewClientTOUT.setItems(FXCollections.observableArrayList(Context.getInstance().getReservations()));
+                listViewClientTOUT.setItems(Context.getInstance().getReservationsOb());
                 listViewClientTOUT.getSelectionModel().selectedItemProperty().addListener(
                         (observable, oldValue, newValue) -> {
                                 btnsupprimer.setDisable(false);
