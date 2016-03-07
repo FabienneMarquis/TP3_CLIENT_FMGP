@@ -4,14 +4,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import model.Context;
 
+import javax.swing.*;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -36,15 +36,37 @@ public class ControllerConnection implements Initializable, Observer {
 
     @FXML
     void connectionServer(ActionEvent event) {
+        //System.out.println("wtf:"+Context.getInstance().getIp());
+        if (Context.getInstance().getIp()==null) {
+            String ip = "";
+            try {
+                ip = InetAddress.getLocalHost().getHostAddress();
 
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+            TextInputDialog dialog =new TextInputDialog(ip);
+            dialog.setTitle("Configuration IP serveur");
+            dialog.setHeaderText("Aucune IP serveur configurer pour l'application");
+            dialog.setContentText("Veuillez entrer l'IP:");
+
+            // Traditional way to get the response value.
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                ip = result.get();
+                System.out.println("IP: " + ip);
+                Context.getInstance().setIp(ip);
+            }
+        }
         if (textNoEmploye.getText().isEmpty() || textMotPasse.getText().isEmpty()) {
             displayChampsErreur();
         } else {
             try {
                 int numEmp = Integer.parseInt(textNoEmploye.getText());
                 // Demande de login au serveur.
-                Context.getInstance().login(numEmp, textMotPasse.getText());
-            }catch (Exception e){
+                if(!Context.getInstance().login(numEmp, textMotPasse.getText()))
+                    displayChampsErreur();
+            } catch (Exception e) {
                 displayChampsErreur();
             }
             //lancer la connection
@@ -52,13 +74,15 @@ public class ControllerConnection implements Initializable, Observer {
         }
 
     }
-    private void displayChampsErreur(){
+
+    private void displayChampsErreur() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Connection");
         alert.setHeaderText("Champs invalide");
         alert.setContentText("Vous n'avez pas entrer votre numéro d'employé ou mot de passe correctement. ");
         alert.showAndWait();
     }
+
     @FXML
     void deconnectionServeur(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -81,15 +105,14 @@ public class ControllerConnection implements Initializable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (Context.getInstance().isLoggedIn()) {
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 btnDeconnection.setDisable(false);
                 btnConnection.setDisable(true);
-                textBienvenu.setText("Bienvenu "+Context.getInstance().getPrenomEmp()+" "+Context.getInstance().getNomEmpl());
+                textBienvenu.setText("Bienvenu " + Context.getInstance().getPrenomEmp() + " " + Context.getInstance().getNomEmpl());
             });
 
         } else if (!Context.getInstance().isLoggedIn()) {
-
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 btnDeconnection.setDisable(true);
                 btnConnection.setDisable(false);
                 Alert alert = new Alert(Alert.AlertType.ERROR);

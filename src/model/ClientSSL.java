@@ -19,6 +19,7 @@ public class ClientSSL extends Thread {
     ClientSSL(String ip) {
         System.setProperty("javax.net.ssl.trustStore", "public.jks");
         SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        fabriqueObjet = new FabriqueObjet();
         try {
             socket = (SSLSocket) ssf.createSocket(ip, 8888);
             socket.startHandshake();
@@ -47,7 +48,7 @@ public class ClientSSL extends Thread {
                 switch (model) {
                     case "client": {
                         switch (action) {
-                            case "init":
+                            case "all":
                                 fabriqueObjet.constructClient(args);
                                 break;
                             case"modify":
@@ -108,7 +109,7 @@ public class ClientSSL extends Thread {
                         break;
                     case "reservation":
                         switch (action) {
-                            case "init":
+                            case "all":
                                 fabriqueObjet.constructReservation(args);
                                 break;
                             case"new":

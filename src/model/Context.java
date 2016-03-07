@@ -21,7 +21,7 @@ public class Context extends Observable {
     private Client client;
     private Reservation reservation;
     private int port;
-    private String ip = "127.0.0.1";
+    private String ip;
     private boolean connection;
     private int numEmploye;
     private String passwordEmploye;
@@ -38,8 +38,7 @@ public class Context extends Observable {
         chambres = new ArrayList<>();
         clients = new ArrayList<>();
         reservations = new ArrayList<>();
-        clientSSL = new ClientSSL(ip);
-        clientSSL.start();
+
     }
 
     /**
@@ -186,16 +185,19 @@ public class Context extends Observable {
      * @return
      */
     public String getIp() {
-        if (ip == null) {
-            try {
-                ip = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (ip == null) {
+//            try {
+//                ip = InetAddress.getLocalHost().getHostAddress();
+//            } catch (UnknownHostException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return ip;
     }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
     /*
     * Info pour procédure d'envoit et réception de données
     * model@action?varname1=valeur&varname2=valeur
@@ -241,16 +243,36 @@ public class Context extends Observable {
         clientSSL.send(newRez);
     }
 
-    public void login(int numEmploye, String passWordEmploye) {
-        if (!clientSSL.isFermer()) {
+    public boolean login(int numEmploye, String passWordEmploye) {
+        if(clientSSL==null){
+            clientSSL = new ClientSSL(ip);
+            clientSSL.start();
             String infoConnection = "employee@login?id=" + numEmploye + "&mot_de_passe=" + passWordEmploye;
             clientSSL.send(infoConnection);
+            this.numEmploye = numEmploye;
+            this.passwordEmploye = passWordEmploye;
+            return true;
+        }else{
+            return false;
         }
     }
 
     public void loginAccepted(String prenomEmp, String nomEmpl) {
         this.prenomEmp = prenomEmp;
         this.nomEmpl = nomEmpl;
+        clientSSL.send("client@all");
+        clientSSL.send("reservation@all");
+        clientSSL.send("chambre@all");
+        setChanged();
+        notifyObservers();
+
+    }
+    public void loginRefused(){
+        this.prenomEmp = "";
+        this.nomEmpl = "";
+        clientSSL.close();
+        clientSSL = null;
+        setChanged();
         notifyObservers();
     }
 

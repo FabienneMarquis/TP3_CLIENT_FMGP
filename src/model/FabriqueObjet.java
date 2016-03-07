@@ -19,12 +19,13 @@ public class FabriqueObjet {
     private List<Chambre> chambres;
 
     public void constructClient(String info){
+        System.out.println(info);
         int id=0;
         String nom="";
         String prenom="";
         int telephone=0;
         String[] infoC= info.split("&");
-        for (int i =0;infoC.length==i;i++)   {
+        for (int i =0;infoC.length>i;i++)   {
             String [] infoC1 = infoC[i].split("=");
             switch(infoC1[0]){
                 case "id":
@@ -41,6 +42,7 @@ public class FabriqueObjet {
                     break;
             }
         }
+        System.out.println(id+nom+prenom+telephone);
         if(id!=0&&nom!=""&&prenom!=""&&telephone!=0){
             client = new Client(id, nom, prenom, telephone);
             Context.getInstance().getClients().add(client);

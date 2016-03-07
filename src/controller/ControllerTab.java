@@ -31,6 +31,7 @@ public class ControllerTab implements Initializable, Observer {
         tabNewReservation.setDisable(true);
         tabClient.setDisable(true);
         tabnewClient.setDisable(true);
+        Context.getInstance().addObserver(this);
     }
 
     @Override
